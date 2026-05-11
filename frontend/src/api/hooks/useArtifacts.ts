@@ -89,8 +89,7 @@ export function useArtifactDetail(compositeId: CompositeArtifactId) {
     queryKey: artifactKeys.detail(compositeId),
     queryFn: () => getModelDetails(compositeId),
     staleTime: 60 * 1000,
-    enabled:
-      !!compositeId.artifact_store_id && !!compositeId.ml_model_checkpoint_id,
+    enabled: !!compositeId.artifact_store_id && !!compositeId.artifact_local_id,
   })
 }
 
@@ -233,7 +232,7 @@ export function useDownloadModel() {
     const pending = loadPendingDownloads()
     for (const key of pending) {
       const compositeId = decodeArtifactId(key)
-      if (!compositeId.artifact_store_id || !compositeId.ml_model_checkpoint_id)
+      if (!compositeId.artifact_store_id || !compositeId.artifact_local_id)
         continue
 
       startDownloadPolling(compositeId, () => {
